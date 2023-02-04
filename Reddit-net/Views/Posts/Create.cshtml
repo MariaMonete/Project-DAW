@@ -1,0 +1,33 @@
+﻿@using RedditNet.Models
+@model RedditNet.Models.PostModel.PostCreateModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1><a href="@Url.RouteUrl("ShowSubPosts", new {subId = Model.SubId, start = 0})" class="text-decoration-none link-secondary">Back to posts</a></h1>
+
+<form method="post" action="/@Model.SubId/posts/create">
+    <div class="card">
+        <div class="card-body">
+            @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
+            <h3>@Html.Label("Title", "Add your title here")</h3>
+            <br />
+            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+            <br />
+            @Html.TextBox("Title", Model.Title, new { @class = "form-control" })
+            <br />
+            <p>@Html.Label("Text", "Add your text here")</p>
+            <br />
+            @Html.ValidationMessageFor(m => m.Text, "", new { @class = "text-danger" })
+            <br />
+            @Html.TextArea("Text", null, new { @class = "summernote" })
+            
+            <br />
+            <button type="submit" class="btn btn-primary">Create Post</button>
+        </div>
+        
+    </div>
+</form>

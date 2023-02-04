@@ -1,0 +1,103 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<h3>@ViewData["Title"]</h3>
+
+<div class="card">
+    
+        <h2 class="card-header">@Model.Username </h2>
+    <div class="card-body">
+        @if (Model.ProfilePic != null)
+        {
+            <img src="@Url.Content(Model.ProfilePic)" alt="poza profil" style="border-radius:100%;width:300px">
+        }
+        else
+        {
+            <img src="/pictures/defaultPic.svg" alt="poza profil" style="border-radius:100%;display:block;width:300px;margin-left: auto;margin-right: auto;">
+        }
+
+        <br />
+        <p>Role: <b>@Model.Role</b></p>
+        <br />
+        <br />
+        <form enctype="multipart/form-data" asp-controller="Users" asp-action="UploadProfilePic">
+            <input class="form-control" type="file" name="profilePic" />
+            
+            <input class="btn btn-success" type="submit" value="Upload" />
+        </form>
+        <br />
+
+    </div>
+    <div >
+        @if (Model.Description != null)
+        {
+            <form method="post" action="/users/edit">
+                <div class="card">
+                    <div class="card-body">
+                        @Html.TextBox("Description", Model.Description, new { @class = "form-control" })
+
+                        <br />
+                        <button type="submit" class="btn btn-primary">Edit About Section</button>
+                    </div>
+
+                </div>
+            </form>
+
+            <form method="post" action="/users/edit">
+                <div class="card">
+                    <div class="card-body">
+                        <input class="form-control" type="text" name="Description" value="" hidden/>
+
+
+                        <br />
+                        <button type="submit" class="btn btn-primary">Remove About Section</button>
+                    </div>
+
+                </div>
+            </form>
+        }
+        else
+        {
+            <form method="post" action="/users/edit">
+                <div class="card">
+                    <div class="card-body">
+                        @Html.TextBox("Description", Model.Description, new { @class = "form-control" })
+
+                        <br />
+                        <button type="submit" class="btn btn-primary">Add About Section</button>
+                    </div>
+
+                </div>
+            </form>
+        }
+    </div>
+
+</div>
+<br />
+<br />
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

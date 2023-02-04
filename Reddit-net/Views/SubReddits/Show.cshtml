@@ -1,0 +1,86 @@
+﻿@using RedditNet.Models
+@model RedditNet.Models.SubRedditModel.SubRedditPostsModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@if (TempData.ContainsKey("message"))
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.message</h2>
+}
+@{
+
+
+
+    <h1><a href='@Url.ActionLink("Index", "Home")' class="link-secondary text-decoration-none">Back to Home Page</a></h1>
+    var posts = Model.Posts;
+    <br />
+    <div class="card">
+        <h1 class="card-header">@Model.Name</h1>
+        <div class="card-body">
+            <p class="card-text">Description: @Model.Description</p>
+
+            @if (User.IsInRole("Admin"))
+            {
+
+                <button type="button" class="btn btn-light"><i class="bi bi-pencil-fill"></i><a href="@Url.RouteUrl("EditSub", new {subId = Model.Id})" class="link-secondary text-decoration-none">Edit</a></button>
+
+                <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i><a href="@Url.RouteUrl("DeleteSub", new {subId = Model.Id})" class="text-decoration-none link-light">Delete</a></button>
+                <br>
+                <br>
+            }
+
+
+            <button type="button" class="btn btn-secondary"> <a href="/@Model.Id/posts/create" class="text-decoration-none link-light">Create a new Post</a></button>
+        </div>
+
+    </div>
+
+
+
+    <div class="card">
+        <h2 class="card-header">Posts below</h2>
+        <div class="card-body">
+            @foreach (var p in posts)
+            {
+                <div class="card">
+                    <h1 class="card-header"><a href="/@Model.Id/posts/@p.Id/comments" class="text-decoration-none link-dark">@p.Title</a></h1>
+
+                    <div class="card-body">
+                        <p class="card-text">
+                            Posted by: <i class="bi bi-person"></i>
+                            <a href="@Url.RouteUrl("ShowUser", new {userId = p.UserId})" class="text-decoration-none">@p.UserName</a>
+                        </p>
+                        <p class="card-text">Votes: @p.Votes</p>
+                    </div>
+
+
+                </div>
+            }
+        </div>
+
+
+    </div>
+    @if (ViewBag.Page > 0)
+    {
+        <a href="@Url.RouteUrl("ShowSubPosts", new {subId = Model.Id, start = ViewBag.Page - 1})"
+       class="btn btn-secondary">
+            &laquo; Prev
+        </a>
+    }
+
+    @if (ViewBag.Page < ViewBag.MaxPage)
+    {
+
+        <a href="@Url.RouteUrl("ShowSubPosts", new {subId = Model.Id, start = ViewBag.Page + 1})"
+       class="btn btn-secondary">
+            Next &raquo;
+        </a>
+    }
+
+}
+
+
+
+

@@ -1,0 +1,138 @@
+﻿@using RedditNet.Models
+@model RedditNet.Models.PostModel.PostThreadModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+
+@{
+    <div class="card">
+                    <h1 class="card-header ">@Model.Title</h1>
+                    <div class="card-body">
+                        <h2><a href="@Url.RouteUrl("ShowSubPosts", new {subId = Model.SubId, start = 0})" class="text-decoration-none">Go back to SubReddit @Model.SubName</a></h2>
+                        <p>Votes: <b>@Model.Votes</b></p>
+                        <p><b>Posted by </b><i class="bi bi-person"></i><a href="@Url.RouteUrl("ShowUser", new {userId = Model.UserId})" class="text-decoration-none link-secondary">@Model.UserName</a></p>
+                        <p>Content: @Html.Raw(Model.Text)</p>
+
+
+                        @if (ViewBag.AfisareButoane == true && Model.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+            {
+                            <button type="button" class="btn btn-primary"><i class="bi bi-pencil-fill"></i><a href="@Url.RouteUrl("EditPost", new {subId = Model.SubId, postId = Model.Id})" class="text-decoration-none link-light">Edit</a></button>
+            }
+                        @if (ViewBag.AfisareButoane == true && Model.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin || ViewBag.EsteModerator)
+            {
+                            <button type="button" class="btn btn-danger"><i class="bi bi-trash"></i><a href="@Url.RouteUrl("DeletePost", new {subId = Model.SubId, postId = Model.Id})" class="text-decoration-none link-light">Delete</a></button>
+            }
+
+                        @if (ViewBag.AfisareButoane == true && User.IsInRole("Admin"))
+            {
+                            <button type="button" class="btn btn-primary"><a href="@Url.RouteUrl("MovePost", new {subId = Model.SubId, postId = Model.Id})" class="text-decoration-none link-light">Move post</a></button>
+            }
+
+
+                    </div>
+
+    </div>
+
+    <br />
+
+    <div >
+
+                    <div class="row  d-flex justify-content-center">
+
+                        <h4>Comment section</h4>
+                        <h6 class="text-primary">Sort by</h6>
+
+                        <div>
+                            <i class="bi bi-hourglass-bottom"></i><a href="/@Model.SubId/posts/@Model.Id/comments/@ViewBag.ByTimeAsc" class="text-decoration-none link-secondary"> Newest </a>
+                            <i class="bi bi-hourglass-top"></i><a href="/@Model.SubId/posts/@Model.Id/comments/@ViewBag.ByTimeDesc" class="text-decoration-none link-secondary"> Oldest </a>
+                            <i class="bi bi-sort-up"></i><a href="/@Model.SubId/posts/@Model.Id/comments/@ViewBag.ByVotesDesc" class="text-decoration-none link-secondary"> Top </a>
+                            <i class="bi bi-bar-chart"></i><a href="/@Model.SubId/posts/@Model.Id/comments/@ViewBag.ByVotesAsc" class="text-decoration-none link-secondary"> Controversial </a>
+                        </div>
+                      
+                    </div>
+    </div>
+    <br>
+
+
+
+    var comments = Model.Comments;
+    <div class="card">
+        
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            @foreach (var c in comments)
+                {
+                                @if(c==comments.First()){
+                                    <div style="display:none">
+                                    </div>
+                        <button style="margin-left:24px" type="button" class="btn btn-outline-secondary"><i class="bi bi-reply"></i> <a href="@Url.RouteUrl("CreateComment", new {subId = Model.SubId, postId = Model.Id, commentId = c.Id})" class="text-decoration-none link-dark ">Reply to this post</a></button>
+                    }
+                    else{
+                      
+                        String ident = (c.Depth * 24).ToString() + "px";
+                                    <div style="margin-left : @ident">
+                                    <li class="list-group-item">
+                                        <strong>
+                                            <i class="bi bi-person">
+                                                <a href="@Url.RouteUrl("ShowUser", new {userId = c.UserId})" class="text-decoration-none text-secondary">@c.UserName</a>
+                                            </i>
+                                        </strong>
+
+                                            @if (c.Deleted == false)
+                                {
+                                            <h6>@c.Text</h6>
+                                }
+                                else
+                                {
+                                            <h6>[deleted]</h6>
+                                }
+                                        <p>Votes: @c.Votes</p>
+
+                                            @if (c.Deleted == false)
+                                {
+                                            <button type="button" class="btn btn-secondary"><i class="bi bi-reply"></i> <a href="@Url.RouteUrl("CreateComment", new {subId = Model.SubId, postId = Model.Id, commentId = c.Id})" class="text-decoration-none link-light">Reply to this user</a></button>
+
+                                                @if (ViewBag.AfisareButoane == true && c.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin || ViewBag.EsteModerator)
+                                    {
+
+                                                <button type="button" class="btn btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                    <a href="@Url.RouteUrl("DeleteComment", new {subId = Model.SubId, postId = Model.Id, commentId = c.Id})" class="text-decoration-none link-light">Delete</a>
+                                                </button>
+                                    }
+                                                @if (ViewBag.AfisareButoane == true && c.UserId == ViewBag.UserCurent || ViewBag.EsteAdmin)
+                                    {
+                                                <button type="button" class="btn btn-primary">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                    <a href="@Url.RouteUrl("EditComment", new {subId = Model.SubId, postId = Model.Id, commentId = c.Id})" class="text-decoration-none link-light">Edit</a>
+                                                </button>
+                                    }
+                    }
+                                
+                                    
+                                            
+                                
+                            
+
+
+                                </li>
+                        </div>
+
+
+                }
+                }
+                    </ul>
+                </div>
+    </div>
+
+
+
+
+}
+    

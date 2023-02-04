@@ -1,0 +1,29 @@
+﻿@using RedditNet.Models
+@model RedditNet.Models.CommentModel.CommentUpdateModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+<div class="card">
+    <h1 class="card-header "><a href="@Url.RouteUrl("ShowPostComments", new {subId = Model.SubId, postId = Model.PostId})" class="text-decoration-none link-primary">Back to comments</a></h1>
+    <div class="card-body">
+
+        <form method="post" action="/@Model.SubId/@Model.PostId/comments/edit/@Model.Id">
+            @Html.Label("Text", "Edit comment here")
+            <br />
+            <br />
+            @Html.TextBox("Text", Model.Text, new { @class = "form-control" })
+          
+            @Html.ValidationMessage("Text", null, new { @class = "text-danger" })
+            <br />
+            <br />
+            <button class="btn btn-primary" type="submit">Edit Comment</button>
+        </form>
+    </div>
+
+</div>

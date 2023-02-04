@@ -1,0 +1,18 @@
+﻿
+@model IEnumerable<RedditNet.Models.CommentModel.CommentThreadModel>
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    foreach (var c in Model)
+    {
+        String ident = (c.Depth * 24).ToString() + "px";
+        <div style="margin-left : @ident">
+            @c.Text
+            @c.Id
+        </div>
+    }
+}
+
+

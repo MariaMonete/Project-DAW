@@ -1,0 +1,53 @@
+﻿@using RedditNet.Models
+@model RedditNet.Models.UserModel.UserShowModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    
+
+    <div class="card">
+                <h2 class="card-header  ">@Model.UserName's Profile</h2>
+                <div class="card-body">
+                    
+                    @if (Model.ProfilePic != null)
+            {
+                        <img src="@Model.ProfilePic" alt="poza profil" style="border-radius:100%;width:150px">
+            }else
+            {
+                <img src="/pictures/defaultPic.svg" alt="poza profil" style="border-radius:100%;width:150px">
+            }
+                    <p>Email: <b>@Model.Email</b></p>
+                    @if (Model.Description != null)
+            {
+                        <p>About: <b>@Model.Description</b></p>
+            }else
+            {
+                        <p>About: <b>Apparently, this user prefers to keep an air of mystery about them.</b></p>
+            }
+                    <p>Role: <b>@Model.Role</b></p>
+            @if (User.IsInRole("Admin"))
+            {
+                <form method="get" action="@Url.RouteUrl("DeleteUser", new {userId = Model.Id})">
+                    <button class="btn btn-danger" type="submit">Delete User </button>
+                </form>
+                <br />
+                <form method="post" action="@Url.RouteUrl("ChangeRoleUser", new {userId = Model.Id, newRole = "Regular"})">
+                    <button class="btn btn-secondary" type="submit">Change to Regular</button>
+                </form>
+                <br>
+                <form method="post" action="@Url.RouteUrl("ChangeRoleUser", new {userId = Model.Id, newRole = "Moderator"})">
+                    <button class="btn btn-secondary"type="submit">Change to Moderator</button>
+                </form>
+                <br>
+                <form method="post" action="@Url.RouteUrl("ChangeRoleUser", new {userId = Model.Id, newRole = "Admin"})">
+                    <button class="btn btn-secondary" type="submit">Change to Admin</button>
+                </form>
+            }
+        </div>
+                
+    </div>
+
+    
+}

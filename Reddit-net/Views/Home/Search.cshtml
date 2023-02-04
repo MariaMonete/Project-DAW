@@ -1,0 +1,235 @@
+﻿@using RedditNet.Models
+@model RedditNet.Models.SearchModel
+
+<style>
+    .searchWrapper {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .searchLink {
+        flex-grow: 1;
+    }
+</style>
+
+<div class="searchWrapper" style="background-color:#003d7c;font-size:20px">
+    <a class="searchLink text-decoration-none link-light" href='/search/0/sr?search=@Context.Request.Query["search"]'>SubReddits</a>
+    <a class="searchLink text-decoration-none link-light" href='/search/0/users?search=@Context.Request.Query["search"]'>Users</a>
+    <a class="searchLink text-decoration-none link-light" href='/search/0/comments?search=@Context.Request.Query["search"]'>Comments</a>
+    <a class="searchLink text-decoration-none  link-light" href='/search/0/posts?search=@Context.Request.Query["search"]'>Posts</a>
+</div>
+<br />
+<button class="btn btn-outline-light" ><a href='@Url.ActionLink("Index", "Home")' class="link-secondary text-decoration-none" >Back to Home Page</a></button>
+@if (Model.Subs != null)
+{
+
+    <div class="subs-wrapper " >
+
+        <h3 style="align-self:center;background-image:linear-gradient(to right,white,#e1f1f9,white)">SubReddits related to your search</h3>
+        <div class="container-fluid subs-list " >
+            @{
+                foreach (var s in Model.Subs)
+                {
+                                                    <div class="subs-row" >
+                        <h5 class="bg bg-light bg-gradient" ><a href="/subs/@s.Id/posts/0" class="text-decoration-none link-dark">@s.Name</a></h5>
+
+                                                        <p class="card-body">@s.Description</p>
+                                                    </div>
+
+                }
+            }
+        </div>
+
+    </div>
+
+    @if (ViewBag.Page > 0)
+    {
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page - 1, type = "sr"})">
+            
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    &laquo; Prev
+                </button>
+            </div>
+        </form>
+    }
+
+    @if (ViewBag.Page < ViewBag.MaxPage)
+    {
+
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page + 1, type = "sr"})">
+            
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    Next &raquo;
+                </button>
+            </div>
+        </form>
+    }
+   
+}
+
+@if (Model.Comments != null)
+{
+    <h3 style="align-self:center;background-image:linear-gradient(to right,white,#e1f1f9,white)">See coments related to your search</h3>
+    @foreach (var x in Model.Comments)
+    {
+
+        <div class="card" style="background-image:linear-gradient(to right, #f9fcfe,white,#f9fcfe)">
+            <br />
+            <h4 style="font-size:25px;align-self:center">
+                See comment <a class="text-decoration-none link-info" href="/@x.SubId/posts/@x.PostId/comments"> here -> </a>
+            @*@x.UserId
+            @x.Votes.ToString()*@
+            Content: @x.Text
+            </h4>
+            <br>
+        </div>
+    }
+
+    @if (ViewBag.Page > 0)
+    {
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page - 1, type = "comments"})">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    &laquo; Prev
+                </button>
+            </div>
+        </form>
+    }
+
+    @if (ViewBag.Page < ViewBag.MaxPage)
+    {
+
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page + 1, type = "comments"})">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    Next &raquo;
+                </button>
+            </div>
+        </form>
+    }
+
+}
+
+@if (Model.Posts != null)
+{
+    <div class="card">
+        <h2 class="card-header" style="align-self:center;background-image:linear-gradient(to right,white,#e1f1f9,white)">Posts related to your search</h2>
+        <div class="card-body">
+            @foreach (var p in Model.Posts)
+            {
+                <div class="card">
+                    <h1 class="card-header"><a href="/@p.SubId/posts/@p.Id/comments" class="text-decoration-none link-dark">@p.Title</a></h1>
+
+                    <div class="card-body">
+                        <p class="card-text">Posted by: <i class="bi bi-person"></i>@p.UserName</p>
+                        <p class="card-text">Votes: @p.Votes</p>
+                    </div>
+
+
+                </div>
+            }
+        </div>
+
+
+    </div>
+
+    @if (ViewBag.Page > 0)
+    {
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page - 1, type = "posts"})">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    &laquo; Prev
+                </button>
+            </div>
+        </form>
+    }
+
+    @if (ViewBag.Page < ViewBag.MaxPage)
+    {
+
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page + 1, type = "posts"})">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    Next &raquo;
+                </button>
+            </div>
+        </form>
+    }
+
+}
+
+@if (Model.Users != null)
+{
+    <h3 style="align-self:center;background-image:linear-gradient(to right,white,#e1f1f9,white)">Users related to your search</h3>
+
+    @foreach (var u in Model.Users)
+    {
+        <div class="card">
+            <div class="card-body" style="align-self:center">
+                <h2 > <a class="text-decoration-none link-dark" href="/users/@u.Id">@u.UserName </a></h2>
+            </div>
+
+        </div>
+    }
+
+    @if (ViewBag.Page > 0)
+    {
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page - 1, type = "users"})">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    &laquo; Prev
+                </button>
+            </div>
+        </form>
+    }
+
+    @if (ViewBag.Page < ViewBag.MaxPage)
+    {
+
+        <form method="GET" action="@Url.RouteUrl("SearchResults", new {page = ViewBag.Page + 1, type = "users"})">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@Context.Request.Query["search"]" hidden>
+                <button class="btn btn-secondary"
+                type="submit">
+                    Next &raquo;
+                </button>
+            </div>
+        </form>
+    }
+   
+}
+

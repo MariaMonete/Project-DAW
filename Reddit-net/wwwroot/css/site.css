@@ -1,0 +1,134 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    margin: 0px ;
+    padding: 0;
+}
+
+body {
+    margin: 0px ;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+nav {
+    margin: 0;
+    background-image: linear-gradient(#001f3f,#003d7c);
+    color: #FFFFFF;
+}
+
+/*nav a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #dadeed;
+}*/
+
+main {
+    margin: 10px 10px;
+    padding: 0;
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.main-wrapper {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    flex-grow: 1;
+    background-color: #ffffff;
+    width: 100%;
+    display: flex;
+}
+
+.welcome-banner {
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background-image: radial-gradient(#a0d2eb,white);
+    box-shadow: inset 1px -18px 76px -64px rgba(0,0,0,0.75);
+    
+}
+
+.subs-wrapper {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    height: 100%
+    flex-grow: 1;
+}
+
+.subs-wrapper h2{
+    margin-bottom: 10vh;
+    flex-grow: 1;
+}
+
+footer {
+    position: sticky;
+    top: 100%;
+    width: 100%;
+    background-image: linear-gradient(#001f3f,#004a95);
+    height: 4rem;
+    flex-grow: 1;
+}
+
+.subs-row{
+    width: 100%;
+    background-color: #ffffff;
+    height: 100%;
+    flex-grow: 1;
+}
+
+
+.subs-list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.searchBar {
+    background-color: #c6e4f3;
+    border: none;
+}
+
+/*navbar {
+    background-color: #dfe6e9 !important;
+    border: none !important;
+    box-shadow: 0 3px 12px #636e72 !important;
+}*/
+
+a.nav-link {
+    color: white !important;
+}
+
+    a.nav-link:hover {
+        color: #5ca3fe !important;
+    }
+
+.logoutbtn {
+    color: white !important;
+}
+
+    .logoutbtn:hover {
+        color: #5ca3fe !important;
+    }
+
